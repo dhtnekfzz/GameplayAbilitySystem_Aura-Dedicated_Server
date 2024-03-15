@@ -10,7 +10,72 @@
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates=true;
+	
 }
+
+void AAuraPlayerController::PlayerTick(float DeltaSeconds)
+{
+	Super::PlayerTick(DeltaSeconds);
+
+	CursorTrace();
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if(!CursorHit.bBlockingHit) return;
+
+	LastActor=ThisActor;
+	ThisActor=Cast<IAuraInterface>(CursorHit.GetActor());
+
+	/*
+	 *	A LastActor is null && ThisActor is null
+	 *		- Do nothing
+	 *	B LastActor is null && ThisActor is not null
+	 *		- Call HighlightActor on ThisActor
+	 *	C LastActor is not null && ThisActor is null
+	 *		 - Call UnhighlightActor on LastActor
+	 *	D LastActor is not null && ThisActor is not null
+	 *		 - Call UnhighlightActor on LastActor and HighlightActor on ThisActor
+	 *	E LastActor is not null && ThisActor is not null && LastActor is equal to ThisActor
+	 *		 - Do nothing
+	 */
+	if(LastActor==nullptr)
+	{
+		if(ThisActor!=nullptr)
+		{
+			// B
+			ThisActor->HighlightActor();
+		}
+		else
+		{
+			// A Do nothing
+		}
+	}
+	else
+	{
+		if(ThisActor==nullptr)
+		{
+			// C
+			LastActor->UnhighlightActor();
+		}
+		else
+		{
+			if(LastActor!=ThisActor)
+			{
+				// D
+				LastActor->UnhighlightActor();
+				ThisActor->HighlightActor();
+			}
+			else
+			{
+				// E Do nothing
+			}
+		}
+	}
+}
+
 
 void AAuraPlayerController::BeginPlay()
 {
@@ -22,7 +87,7 @@ void AAuraPlayerController::BeginPlay()
 	Subsystem->AddMappingContext(AuraContext, 0);
 
 	bShowMouseCursor=true;
-	DefaultMouseCursor=EMouseCursor::Default;
+	DefaultMouseCursor=EMouseCursor::Default; 
 
 	FInputModeGameAndUI InputModeData;
 	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
