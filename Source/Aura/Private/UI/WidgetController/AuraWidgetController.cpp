@@ -10,3 +10,7 @@ void UAuraWidgetController::SetWidgetControllerParams(FWidgetControllerParams Pa
 	AbilitySystemComponent=Params.AbilitySystemComponent;
 	AttributeSet=Params.AttributeSet;
 }
+
+void UAuraWidgetController::BroadcastInitialValues()
+{
+}
