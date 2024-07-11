@@ -35,6 +35,7 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
+	
 	IAuraInterface* ThisActor;
 	IAuraInterface* LastActor;
 };
