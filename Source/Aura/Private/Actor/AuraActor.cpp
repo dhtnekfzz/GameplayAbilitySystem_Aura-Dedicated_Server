@@ -37,5 +37,15 @@ void AAuraActor::ApplyEffectorToTarget(AActor* TargetActor, TSubclassOf<UGamepla
 	
 }
 
+void AAuraActor::OnOverlap(AActor* TargetActor)
+{
+	
+}
+
+void AAuraActor::OnEndOverlap(AActor* TargetActor)
+{
+	
+}
+
 
 
