@@ -18,5 +18,8 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintPure, Category ="AuraAbilitySystemLibrary|Widget")
 	static UOverlayWidgetController* GetOverlayWidgetController(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category ="AuraAbilitySystemLibrary|Widget")
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(UObject* WorldContextObject);
 	
 };
