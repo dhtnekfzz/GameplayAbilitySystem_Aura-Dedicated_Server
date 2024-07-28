@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 #include "Interaction/AuraInterface.h"
 #include "AuraPlayerController.generated.h"
@@ -10,6 +11,8 @@
 class UInputAction;
 struct FInputActionValue;
 class UInputMappingContext;
+class UAuraInputConfig;
+
 /**
  * 
  */
@@ -38,6 +41,13 @@ private:
 	
 	IAuraInterface* ThisActor;
 	IAuraInterface* LastActor;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
 };
 
 
