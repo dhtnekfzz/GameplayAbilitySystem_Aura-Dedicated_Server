@@ -27,7 +27,7 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 	}
 }
 
-void UAuraAbilitySystemComponent::AbilityInputHeld(const FGameplayTag& InputTag)
+void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if(!InputTag.IsValid()) return;
 
@@ -44,7 +44,7 @@ void UAuraAbilitySystemComponent::AbilityInputHeld(const FGameplayTag& InputTag)
 	}
 }
 
-void UAuraAbilitySystemComponent::AbilityInputReleased(const FGameplayTag& InputTag)
+void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
 	if(!InputTag.IsValid()) return;
 
@@ -57,7 +57,7 @@ void UAuraAbilitySystemComponent::AbilityInputReleased(const FGameplayTag& Input
 	}
 }
 
-void UAuraAbilitySystemComponent::AbilityInputPressed(const FGameplayTag& InputTag)
+void UAuraAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
 }
 
