@@ -43,6 +43,7 @@ private:
 	
 	IAuraInterface* ThisActor;
 	IAuraInterface* LastActor;
+	FHitResult CursorHit;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
