@@ -37,6 +37,13 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
+	void ShiftPressed(){bShiftKeyDown=true;};
+	void ShiftReleased(){bShiftKeyDown=false;};
+	bool bShiftKeyDown=false;
+
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
@@ -51,6 +58,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
+
+
 
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;

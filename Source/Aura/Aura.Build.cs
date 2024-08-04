@@ -8,7 +8,7 @@ public class Aura : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","GameplayAbilities" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","GameplayAbilities","MotionWarping" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  "GameplayTags", "GameplayTasks", "EnhancedInput","NavigationSystem" });
 
