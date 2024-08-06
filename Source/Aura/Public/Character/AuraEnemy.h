@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "Character/AuraCharacterBase.h"
+#include "Components/WidgetComponent.h"
 #include "Interaction/AuraInterface.h"
 #include "AuraEnemy.generated.h"
 
@@ -26,6 +28,13 @@ public:
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
 	/* end Combat Interface */
+	
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FOnAttributeChangedSignature OnHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,4 +43,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
 	int32 Level=1;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
 };
