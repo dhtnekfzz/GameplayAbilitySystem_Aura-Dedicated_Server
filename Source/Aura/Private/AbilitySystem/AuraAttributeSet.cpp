@@ -6,7 +6,9 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -123,11 +125,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+
+			ShowFloatingText(Props,LocalIncomingDamage);
+			
 		}
 	}
 }
 
-void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallbackData& Data, FEffectProperties& Props)
+void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallbackData& Data, FEffectProperties& Props) 
 {
 	
 	Props.EffectContextHandle=Data.EffectSpec.GetContext();
@@ -143,10 +148,10 @@ void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallb
 			{
 				Props.SourceController=Pawn->GetController();
 			}
-			if(Props.SourceController)
-			{
-				Props.SourceCharacter=Cast<ACharacter>(Props.SourceController->GetPawn());
-			}
+		}
+		if(Props.SourceController)
+		{
+			Props.SourceCharacter=Cast<ACharacter>(Props.SourceController->GetPawn());
 		}
 	}
 
@@ -159,6 +164,18 @@ void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallb
 	}
 	
 }
+
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props,float DamageAmount)
+{
+	if(Props.SourceCharacter !=Props.TargetCharacter)
+	{
+		if(AAuraPlayerController* PC=Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter,0)))
+		{
+			PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter);
+		}
+	}
+}
+
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
