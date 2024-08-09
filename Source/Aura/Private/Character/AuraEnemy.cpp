@@ -27,6 +27,12 @@ AAuraEnemy::AAuraEnemy()
 	HealthBar->SetupAttachment(GetRootComponent());
 }
 
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
