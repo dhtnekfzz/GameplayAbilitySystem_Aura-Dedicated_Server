@@ -128,8 +128,8 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			}
 
 			const bool bBlock= UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
-			const bool bCriticalHit= UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
-			ShowFloatingText(Props,LocalIncomingDamage, bBlock, bCriticalHit);
+			const bool bCriticalHit= UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+			ShowFloatingText(Props,LocalIncomingDamage, bCriticalHit, bBlock);
 			
 		}
 	}
@@ -174,7 +174,7 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props,float Da
 	{
 		if(AAuraPlayerController* PC=Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter,0)))
 		{
-			PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter);
+			PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter, bIsCriticalHit,  bIsBlockedHit);
 		}
 	}
 }
