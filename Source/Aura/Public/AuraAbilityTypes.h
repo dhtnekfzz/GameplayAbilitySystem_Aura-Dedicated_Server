@@ -13,6 +13,9 @@ public:
 
 	bool IsCriticalHit() const {return bIsCriticalHit;}
 	bool IsBlockedHit() const {return bIsBlockedHit;}
+
+	void SetIsCriticalHit(bool bInIsCriticalHit) {bIsCriticalHit=bInIsCriticalHit;}
+	void SetIsBlockedHit(bool bInIsBlockedHit) {bIsBlockedHit=bInIsBlockedHit;}
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
