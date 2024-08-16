@@ -29,7 +29,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileLocation)
 	{
 		const FVector SocketLocation=CombatInterface->GetCombatSocketLocation();
 		FRotator Rotation=(ProjectileLocation-SocketLocation).Rotation();
-		Rotation.Pitch=0;
+		
 
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
