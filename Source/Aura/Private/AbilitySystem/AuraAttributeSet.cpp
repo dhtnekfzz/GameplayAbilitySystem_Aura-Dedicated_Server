@@ -156,7 +156,7 @@ void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallb
 	{
 		Props.SourceAvatarActor=Props.SourceASC->AbilityActorInfo->AvatarActor.Get();
 		Props.SourceController=Props.SourceASC->AbilityActorInfo->PlayerController.Get();
-		if(!Props.SourceController&&!Props.SourceAvatarActor)
+		if(!Props.SourceController&&Props.SourceAvatarActor)
 		{
 			if(const APawn* Pawn=Cast<APawn>(Props.SourceAvatarActor))
 			{
@@ -181,20 +181,24 @@ void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallb
 
 void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props,float DamageAmount,bool bIsCriticalHit, bool bIsBlockedHit)
 {
-	if(Props.SourceCharacter !=Props.TargetCharacter)
+	if(!IsValid(Props.SourceCharacter)||!IsValid(Props.TargetCharacter)) return;
+	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
-		
-		if(AAuraPlayerController* PC=Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 		{
-			PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter, bIsCriticalHit,  bIsBlockedHit);
-			return;
+			if(PC)
+			{
+				PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter, bIsCriticalHit, bIsBlockedHit);
+				return;
+			}
 		}
-		if(AAuraPlayerController* PC=Cast<AAuraPlayerController>( Props.SourceCharacter->Controller))
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.TargetCharacter->Controller))
 		{
-			PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter, bIsCriticalHit,  bIsBlockedHit);
-			return;
+			if(PC)
+			{
+				PC->ShowDamageNumber(DamageAmount, Props.TargetCharacter, bIsCriticalHit, bIsBlockedHit);
+			}
 		}
-		
 	}
 }
 
