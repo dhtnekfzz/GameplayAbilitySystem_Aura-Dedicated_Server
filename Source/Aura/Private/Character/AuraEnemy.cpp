@@ -22,7 +22,6 @@ class UBehaviorTree;
 AAuraEnemy::AAuraEnemy()
 {
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-	GetCharacterMovement()->MaxWalkSpeed=BaseWalkSpeed;
 	
 	AbilitySystemComponent=CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -71,6 +70,7 @@ AActor* AAuraEnemy::GetCombatTarget_Implementation() const
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed=BaseWalkSpeed;
 	InitAbilityActorInfo();
 
 	if(HasAuthority())
