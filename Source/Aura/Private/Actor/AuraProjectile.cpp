@@ -70,8 +70,8 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 	if(!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor)) return;
 	if(!bHit)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, OtherActor->GetActorLocation());
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, OtherActor->GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 		if(LoopingSoundComponent) LoopingSoundComponent->Stop();
 		bHit=true;
 	}
