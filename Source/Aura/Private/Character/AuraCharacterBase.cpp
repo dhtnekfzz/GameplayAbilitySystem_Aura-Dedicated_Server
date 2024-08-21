@@ -127,6 +127,11 @@ int32 AAuraCharacterBase::GetMinionCount_Implementation()
 	return MinionCount;
 }
 
+void AAuraCharacterBase::UpdateMinionCount_Implementation(int32 Count)
+{
+	MinionCount+=Count;
+}
+
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 	
