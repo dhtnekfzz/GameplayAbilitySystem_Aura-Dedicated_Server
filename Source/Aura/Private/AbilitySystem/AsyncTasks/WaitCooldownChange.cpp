@@ -12,7 +12,7 @@ UWaitCooldownChange* UWaitCooldownChange::WaitForCooldownChange(UAbilitySystemCo
 	WaitCooldownChange->ASC=AbilitySystemComponent;
 	WaitCooldownChange->CooldownTag=InCooldownTag;
 
-	if(!IsValid(AbilitySystemComponent) || InCooldownTag.IsValid())
+	if(!IsValid(AbilitySystemComponent) || !InCooldownTag.IsValid())
 	{
 		WaitCooldownChange->EndTask();
 		return nullptr;
@@ -56,7 +56,7 @@ void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* TargetASC
 	SpecApplied.GetAllAssetTags(AssetTags);
 
 	FGameplayTagContainer GrantedTags;
-	SpecApplied.GetAllAssetTags(GrantedTags);
+	SpecApplied.GetAllGrantedTags(GrantedTags);
 
 	if(AssetTags.HasTagExact(CooldownTag) || GrantedTags.HasTagExact(CooldownTag))
 	{
@@ -67,7 +67,7 @@ void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* TargetASC
 			float TimeRemaining=TimesRemaining[0];
 			for(int32 i=0; i<TimesRemaining.Num(); i++)
 			{
-				if(TimesRemaining[i]<TimeRemaining)
+				if(TimesRemaining[i]>TimeRemaining)
 				{
 					TimeRemaining=TimesRemaining[i];
 				}
