@@ -73,9 +73,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
 	int32 Level=1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
-	ECharacterClass CharacterClass=ECharacterClass::Elementalist;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 

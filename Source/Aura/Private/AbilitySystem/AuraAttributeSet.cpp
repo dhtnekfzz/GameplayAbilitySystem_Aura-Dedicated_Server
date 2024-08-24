@@ -144,6 +144,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			
 		}
 	}
+
+	if(Data.EvaluatedData.Attribute==GetIncomingXPAttribute())
+	{
+		const float LocalIncomingXP=GetIncomingXP();
+		SetIncomingXP(0.f);
+	}
 }
 
 void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallbackData& Data, FEffectProperties& Props) 

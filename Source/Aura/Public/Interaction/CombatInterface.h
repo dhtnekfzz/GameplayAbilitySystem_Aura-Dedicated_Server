@@ -8,6 +8,8 @@
 #include "NiagaraSystem.h"
 #include "CombatInterface.generated.h"
 
+enum class ECharacterClass;
+
 USTRUCT(BlueprintType)
 struct FTaggedMontage
 {
@@ -78,4 +80,7 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void UpdateMinionCount(int32 Count);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	ECharacterClass GetCharacterClass();
 };

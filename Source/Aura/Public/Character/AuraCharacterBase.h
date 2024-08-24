@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
 #include "NiagaraSystem.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
@@ -35,6 +36,7 @@ public:
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void UpdateMinionCount_Implementation(int32 Count) override;
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	/* end Combat Interface */
 	
 	UFUNCTION(NetMulticast, Reliable)
@@ -109,6 +111,9 @@ protected:
 
 	/* Minions */
 	int32 MinionCount=0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
+	ECharacterClass CharacterClass=ECharacterClass::Elementalist;
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Abilites")
