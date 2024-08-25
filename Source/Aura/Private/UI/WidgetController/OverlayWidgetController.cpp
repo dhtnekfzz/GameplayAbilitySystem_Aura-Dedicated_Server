@@ -19,9 +19,11 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
+	AAuraPlayerState* AuraPlayerState=CastChecked<AAuraPlayerState>(PlayerState);
+	AuraPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	
 	const UAuraAttributeSet* AuraAttributeSet=CastChecked<UAuraAttributeSet>(AttributeSet);
-	const AAuraPlayerState* AuraPlayerState=CastChecked<AAuraPlayerState>(PlayerState);
-
+	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
@@ -110,7 +112,7 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 		const int32 DeltaLevelRequirement=LevelUpRequirement-PreviousLevelRequirement;
 		const int32 XPForThisLevel=NewXP-PreviousLevelRequirement;
 
-		const float XPBarPercent=static_cast<float>(XPForThisLevel/DeltaLevelRequirement);
+		const float XPBarPercent=static_cast<float>(XPForThisLevel)/static_cast<float>(DeltaLevelRequirement);
 
 		OnXPPercentChangedDelegate.Broadcast(XPBarPercent);
 	}

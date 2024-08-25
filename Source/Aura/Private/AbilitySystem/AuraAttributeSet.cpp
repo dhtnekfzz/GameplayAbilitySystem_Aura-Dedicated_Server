@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
+#include "Interaction/PlayerInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/AuraPlayerController.h"
@@ -150,6 +151,11 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	{
 		const float LocalIncomingXP=GetIncomingXP();
 		SetIncomingXP(0.f);
+
+		if(Props.SourceCharacter->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+		}
 	}
 }
 
@@ -220,6 +226,7 @@ void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 		const FAuraGameplayTags& GameplayTags=FAuraGameplayTags::Get();
 		FGameplayEventData Payload;
 		Payload.EventTag=GameplayTags.Attributes_Meta_IncomingXP;
+		Payload.EventMagnitude=XPReward;
 		
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
 	}
