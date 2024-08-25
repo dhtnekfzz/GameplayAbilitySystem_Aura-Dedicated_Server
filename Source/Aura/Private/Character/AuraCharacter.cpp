@@ -3,6 +3,7 @@
 
 #include "Character/AuraCharacter.h"
 
+#include "EditorDirectories.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerState.h"
@@ -46,7 +47,8 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXP)
 	
 }
 
-int32 AAuraCharacter::GetPlayerLevel()
+
+int32 AAuraCharacter::GetPlayerLevel_Implementation()
 {
 	const AAuraPlayerState* AuraPlayerState=GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
