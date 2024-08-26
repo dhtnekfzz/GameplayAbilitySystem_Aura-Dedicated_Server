@@ -93,13 +93,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	int32 TargetPlayerLevel=1;
 	if(TargetAvatar->Implements<UCombatInterface>())
 	{
-		int32 TargetPlayerLevel=ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
+		TargetPlayerLevel=ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
 	}
 
 	int32 SourcePlayerLevel=1;
 	if(SourceAvatar->Implements<UCombatInterface>())
 	{
-		int32 SourcePlayerLevel=ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
+		SourcePlayerLevel=ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
 	}
 
 	const FGameplayEffectSpec& Spec=ExecutionParams.GetOwningSpec();
