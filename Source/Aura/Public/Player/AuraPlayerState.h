@@ -33,7 +33,7 @@ public:
 	FOnPlayerStatChanged OnXPChangedDelegate;
 	FOnPlayerStatChanged OnLevelChangedDelegate;
 	FOnPlayerStatChanged OnAttributePointsChangedDelegate;
-	FOnPlayerStatChanged OnSpeelPointsChangedDelegate;
+	FOnPlayerStatChanged OnSpellPointsChangedDelegate;
 	
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; };
 	FORCEINLINE int32 GetXP() const { return XP;};
