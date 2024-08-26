@@ -8,6 +8,8 @@
 #include "UObject/NoExportTypes.h"
 #include "AuraWidgetController.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedSignautre, int32, NewValue);
+
 USTRUCT(Blueprintable)
 struct FWidgetControllerParams
 {
