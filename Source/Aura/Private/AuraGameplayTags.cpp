@@ -216,6 +216,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Fire.FireBolt"),
 		FString("FireBolt Ability Tag")
 	);
+
+	GameplayTags.Abilities_Lightning_Electrocute=UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Lightning.Electrocute"),
+		FString("Electrocute Ability Tag")
+	);
 	
 	GameplayTags.Abilities_HitReact=UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.HitReact"),
