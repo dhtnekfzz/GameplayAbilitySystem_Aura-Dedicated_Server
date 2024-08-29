@@ -184,6 +184,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatues(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
+			ClientUpdateAAbilityStatus(Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible);
 		}
 	}
 }
@@ -198,6 +199,12 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 		AbilitiesGivenDelegate.Broadcast();
 	}
 	
+}
+
+void UAuraAbilitySystemComponent::ClientUpdateAAbilityStatus_Implementation(const FGameplayTag AbilityTag,
+	const FGameplayTag StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 
