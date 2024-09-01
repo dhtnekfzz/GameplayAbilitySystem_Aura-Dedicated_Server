@@ -140,20 +140,22 @@ void USpellMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTa
 {
 	bWaitingForEquipSelection=false;
 
-	const FAuraGameplayTags GameplayTags=FAuraGameplayTags::Get();
+	const FAuraGameplayTags& GameplayTags=FAuraGameplayTags::Get();
 
 	FAuraAbilityInfo LastSlotInfo;
 	LastSlotInfo.StatusTag=GameplayTags.Abilities_Status_Unlocked;
 	LastSlotInfo.InputTag=PreviousSlot;
 	LastSlotInfo.AbilityTag=GameplayTags.Abilities_None;
 	AbilityInfoDelegate.Broadcast(LastSlotInfo);
-
+	
 	FAuraAbilityInfo Info=AbilityInfo->FindAbilityInfoForTag(AbilityTag);
 	Info.StatusTag=Status;
 	Info.InputTag=Slot;
 	AbilityInfoDelegate.Broadcast(Info);
 
 	StopWaitForEquipDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType);
+	SpellGlobeReassignedDelegate.Broadcast(AbilityTag);
+	GlobeDeselect();
 
 	
 }
