@@ -10,12 +10,9 @@
 void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 {
 	const FGameplayEffectSpecHandle DamageSpecHandle=MakeOutgoingGameplayEffectSpec(DamageEffectClass, 1);
-
-	for(TTuple<FGameplayTag, FScalableFloat> Pair: DamageTypes)
-	{
-		const float ScaledDamage=Pair.Value.GetValueAtLevel(GetAbilityLevel());
-		DamageSpecHandle.Data.Get()->SetSetByCallerMagnitude(Pair.Key, ScaledDamage);
-	}
+	
+	const float ScaledDamage=Damage.GetValueAtLevel(GetAbilityLevel());
+	DamageSpecHandle.Data.Get()->SetSetByCallerMagnitude(DamageType, ScaledDamage);
 	GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
 	
 }
@@ -28,9 +25,4 @@ FTaggedMontage UAuraDamageGameplayAbility::GetRandomTaggedMontageFromArray(const
 	
 }
 
-float UAuraDamageGameplayAbility::GetDamageByDamageType(float InLevel, const FGameplayTag& DamageType) const
-{
-	check(DamageTypes.Contains(DamageType));
-	return DamageTypes[DamageType].GetValueAtLevel(InLevel);
-}
 
