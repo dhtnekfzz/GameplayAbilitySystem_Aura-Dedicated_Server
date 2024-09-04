@@ -22,7 +22,7 @@ public:
 	void CauseDamage(AActor* TargetActor);
 
 	UFUNCTION(BlueprintCallable)
-	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor);
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor=nullptr);
 protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
