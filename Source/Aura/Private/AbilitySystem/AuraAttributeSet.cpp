@@ -102,8 +102,12 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+	
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
+
+	if(Props.TargetAvatarActor->Implements<UCombatInterface>() && ICombatInterface::Execute_IsDead(Props.TargetAvatarActor)) return;
+	
 
 	if(Data.EvaluatedData.Attribute==GetHealthAttribute())
 	{
@@ -192,13 +196,46 @@ void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 
 void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 {
+	FGameplayEffectContextHandle EffectContext=Props.SourceASC->MakeEffectContext();
+	EffectContext.AddSourceObject(Props.SourceAvatarActor);
+
+	const FGameplayTag DamageType=UAuraAbilitySystemLibrary::GetDamageType(Props.EffectContextHandle);
+	const float DebuffDamage=UAuraAbilitySystemLibrary::GetDebuffDamage(Props.EffectContextHandle);
+	const float DebuffDuration=UAuraAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
+	const float DebuffFrequency=UAuraAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
+
+	FString DebuffName=FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
+	UGameplayEffect* Effect=NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
+
+	Effect->DurationPolicy=EGameplayEffectDurationType::HasDuration;
+	Effect->Period=DebuffFrequency;
+	Effect->DurationMagnitude=FScalableFloat(DebuffDuration);
+
+	Effect->StackingType=EGameplayEffectStackingType::AggregateBySource;
+	Effect->StackLimitCount=1;
+
+	int32 Index=Effect->Modifiers.Num();
+	Effect->Modifiers.Add(FGameplayModifierInfo());
+	FGameplayModifierInfo& ModifierInfo=Effect->Modifiers[Index];
+
+	ModifierInfo.ModifierMagnitude=FScalableFloat(DebuffDamage);
+	ModifierInfo.ModifierOp=EGameplayModOp::Additive;
+	ModifierInfo.Attribute=UAuraAttributeSet::GetIncomingDamageAttribute();
+
+	if(FGameplayEffectSpec* MutableSpec=new FGameplayEffectSpec(Effect, EffectContext, 1.f))
+	{
+		FAuraGameplayEffectContext* AuraContext= static_cast<FAuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
+		TSharedPtr<FGameplayTag> DebuffDamageType=MakeShareable(new FGameplayTag(DamageType));
+			
+		Props.TargetASC->ApplyGameplayEffectSpecToSelf(*MutableSpec);
+	}
 	
 }
 
 void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
-
+	
 	if(Attribute==GetMaxHealthAttribute() && bTopOffHealth)
 	{
 		SetHealth(GetMaxHealth());
