@@ -3,12 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "UObject/Interface.h"
 #include "GameplayTagContainer.h"
 #include "NiagaraSystem.h"
 #include "CombatInterface.generated.h"
 
 enum class ECharacterClass;
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegistered, UAbilitySystemComponent*);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeath, AActor*, DeadActor);
 
 USTRUCT(BlueprintType)
 struct FTaggedMontage
@@ -84,4 +88,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	ECharacterClass GetCharacterClass();
+
+	virtual FOnASCRegistered GetOnAscRegisteredDelegate()=0;
+	virtual FOnDeath GetOnDeathDelegate()=0;
 };

@@ -8,8 +8,8 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 #include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -211,6 +211,11 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	Effect->Period=DebuffFrequency;
 	Effect->DurationMagnitude=FScalableFloat(DebuffDuration);
 
+	UTargetTagsGameplayEffectComponent& AssetTagsComponent = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	FInheritedTagContainer InheritedTagContainer;
+	InheritedTagContainer.Added.AddTag(FAuraGameplayTags::Get().DamageTypesToDebuffs[DamageType]);
+	AssetTagsComponent.SetAndApplyTargetTagChanges(InheritedTagContainer);
+
 	Effect->StackingType=EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount=1;
 
@@ -226,6 +231,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	{
 		FAuraGameplayEffectContext* AuraContext= static_cast<FAuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
 		TSharedPtr<FGameplayTag> DebuffDamageType=MakeShareable(new FGameplayTag(DamageType));
+		AuraContext->SetDamageType(DebuffDamageType);
 			
 		Props.TargetASC->ApplyGameplayEffectSpecToSelf(*MutableSpec);
 	}
