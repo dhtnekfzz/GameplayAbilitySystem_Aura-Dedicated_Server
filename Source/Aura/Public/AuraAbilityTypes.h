@@ -63,6 +63,7 @@ public:
 	void SetDebuffDamage(float InDebuffDamage) {DebuffDamage=InDebuffDamage;}
 	void SetDebuffDuration(float InDebuffDuration) {DebuffDuration=InDebuffDuration;}
 	void SetDebuffFrequency(float InDebuffFrequency) {DebuffFrequency=InDebuffFrequency;}
+	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) {DamageType=InDamageType;}
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
