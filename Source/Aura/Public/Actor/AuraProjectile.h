@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayEffectTypes.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "AuraAbilityTypes.h"
 #include "AuraProjectile.generated.h"
 
 class UNiagaraSystem;
+
 
 UCLASS()
 class AURA_API AAuraProjectile : public AActor
