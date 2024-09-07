@@ -9,6 +9,7 @@
 #include "Components/SplineComponent.h"
 #include "AuraPlayerController.generated.h"
 
+class UNiagaraSystem;
 class UDamageTextComponent;
 class UAuraAbilitySystemComponent;
 class UInputAction;
@@ -62,9 +63,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
-
-
-
+	
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 
@@ -82,6 +81,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
+	
 	void AutoRun();
 
 	UPROPERTY(EditDefaultsOnly)
