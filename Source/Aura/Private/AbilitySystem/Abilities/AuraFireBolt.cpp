@@ -4,6 +4,7 @@
 #include "AbilitySystem/Abilities/AuraFireBolt.h"
 
 #include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 FString UAuraFireBolt::GetDescription(int32 Level)
@@ -82,31 +83,24 @@ void UAuraFireBolt::SpawnProjectiles(const FVector& ProjectileLocation, const FG
 	if(bOverridePitch) Rotation.Pitch=PitchOverride;
 
 	const FVector Forward=Rotation.Vector();
-	const FVector LeftOfSpread=Forward.RotateAngleAxis(-ProjectileSpread/2.f, FVector::UpVector);
-	const FVector RightOfSpread=Forward.RotateAngleAxis(ProjectileSpread/2.f, FVector::UpVector);
-	
 	//NumProjectiles=FMath::Min(GetAbilityLevel(),MaxNumProjectiles);
-
-	if(NumProjectiles>1)
+	
+	TArray<FRotator> Rotations=UAuraAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, NumProjectiles);
+	
+	for(const FRotator& Rot : Rotations)
 	{
-		const float DeltaSpread=ProjectileSpread/(NumProjectiles-1);
-		for(int i=0; i<NumProjectiles; i++)
-		{
-			const FVector Direction=LeftOfSpread.RotateAngleAxis(DeltaSpread*i, FVector::UpVector);
-			
-			UKismetSystemLibrary::DrawDebugArrow(
-				GetWorld(),
-				SocketLocation,
-				SocketLocation+Direction*100.f,
-				1.f,
-				FLinearColor::Red,
-				120,
-				1
-			);
-		}
-	}
-	else
-	{
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetRotation(Rot.Quaternion());
 		
+		AAuraProjectile* Projectile=GetWorld()->SpawnActorDeferred<AAuraProjectile>(
+		   ProjectileClass, SpawnTransform,
+		   GetOwningActorFromActorInfo(),
+		   Cast<APawn>(GetOwningActorFromActorInfo()),
+		   ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		Projectile->DamageEffectParams=MakeDamageEffectParamsFromClassDefaults();
+		
+		Projectile->FinishSpawning(SpawnTransform);
 	}
 }
