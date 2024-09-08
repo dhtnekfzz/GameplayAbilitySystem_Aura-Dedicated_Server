@@ -29,4 +29,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category="Beam")
 	TObjectPtr<APlayerController> OwnerPlayerController;
+
+	UPROPERTY(BlueprintReadWrite, Category="Beam")
+	TObjectPtr<ACharacter> OwnerCharacter;
 };
