@@ -64,10 +64,11 @@ public:
 	UAnimMontage* GetHitReactMontage();
 
 	virtual void Die(const FVector& DeathImpulse)=0;
-
+	virtual FOnDeath& GetOnDeathDelegate()=0;
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsDead() const;
-
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AActor* GetAvatar();
 
@@ -90,7 +91,6 @@ public:
 	ECharacterClass GetCharacterClass();
 
 	virtual FOnASCRegistered GetOnAscRegisteredDelegate()=0;
-	virtual FOnDeath GetOnDeathDelegate()=0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetInShockLoop(bool bInLoop);
