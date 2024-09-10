@@ -214,11 +214,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	float TargetCriticalHitResistance=0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitResistanceDef, EvaluationParameters, TargetCriticalHitResistance);
-	TargetCriticalHitResistance=FMath::Max<float>(SourceCriticalHitChance, 0.f);
+	TargetCriticalHitResistance=FMath::Max<float>(TargetCriticalHitResistance, 0.f);
 
 	float SourceCriticalHitDamage=0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().CriticalHitDamageDef, EvaluationParameters, SourceCriticalHitDamage);
-	SourceCriticalHitDamage=FMath::Max<float>(SourceCriticalHitChance, 0.f);
+	SourceCriticalHitDamage=FMath::Max<float>(SourceCriticalHitDamage, 0.f);
 
 	const FRealCurve* CriticalHitResistanceCurve=CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CriticalHitResistance"),FString());
 	const float CriticalHitResistanceCoefficient=CriticalHitResistanceCurve->Eval(TargetPlayerLevel);
