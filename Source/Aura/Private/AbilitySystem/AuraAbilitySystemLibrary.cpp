@@ -344,10 +344,10 @@ void UAuraAbilitySystemLibrary::GetClosetTargets(int32 MaxTargets, const TArray<
 				ClosestDistance=Distance;
 				ClosestActor=PotentialTarget;
 			}
-			ActorsToCheck.Remove(ClosestActor);
-			OutClosestActors.AddUnique(ClosestActor);
-			++NumTargetsFound;
 		}
+		ActorsToCheck.Remove(ClosestActor);
+		OutClosestActors.AddUnique(ClosestActor);
+		++NumTargetsFound;
 	}
 }
 

@@ -132,7 +132,7 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 {
 	const float LocalIncomingDamage=GetIncomingDamage();
 	SetIncomingDamage(0.f);
-	if(LocalIncomingDamage>=0.f)
+	if(LocalIncomingDamage>0.f)
 	{
 		const float NewHealth=GetHealth()-LocalIncomingDamage;
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
@@ -295,7 +295,7 @@ void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallb
 
 void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props,float DamageAmount,bool bIsCriticalHit, bool bIsBlockedHit)
 {
-	if(!IsValid(Props.SourceCharacter)||!IsValid(Props.TargetCharacter)) return;
+	if(!IsValid(Props.SourceCharacter)||!IsValid(Props.TargetCharacter)||DamageAmount<=0.f) return;
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
 		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))

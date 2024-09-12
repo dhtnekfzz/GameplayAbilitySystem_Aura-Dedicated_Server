@@ -7,8 +7,6 @@
 #include "NiagaraComponent.h"
 #include "DebuffNiagaraComponent.generated.h"
 
-
-
 /**
  * 
  */

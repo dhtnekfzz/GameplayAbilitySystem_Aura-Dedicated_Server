@@ -36,6 +36,8 @@ AAuraEnemy::AAuraEnemy()
 
 	HealthBar=CreateDefaultSubobject<UWidgetComponent>("HealthBar");
 	HealthBar->SetupAttachment(GetRootComponent());
+
+	BaseWalkSpeed=250.f;
 }
 
 void AAuraEnemy::PossessedBy(AController* NewController)
@@ -132,6 +134,9 @@ void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(
+	this,
+	&AAuraEnemy::StunTagChanged);
 
 	if(HasAuthority())
 	{

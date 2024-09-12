@@ -90,7 +90,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	ECharacterClass GetCharacterClass();
 
-	virtual FOnASCRegistered GetOnAscRegisteredDelegate()=0;
+	virtual FOnASCRegistered& GetOnAscRegisteredDelegate()=0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetInShockLoop(bool bInLoop);

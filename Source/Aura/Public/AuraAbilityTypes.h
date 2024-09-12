@@ -136,10 +136,7 @@ protected:
 	float DebuffFrequency=0.f;
 
 	TSharedPtr<FGameplayTag> DamageType;
-
-	UPROPERTY()
-	float DeathImpulseMagnitude=0.f;
-
+	
 	UPROPERTY()
 	FVector DeathImpulse=FVector::ZeroVector;
 
