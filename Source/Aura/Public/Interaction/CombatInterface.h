@@ -30,7 +30,6 @@ struct FTaggedMontage
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	USoundBase* ImpactSound=nullptr;
-
 	 
 };
 

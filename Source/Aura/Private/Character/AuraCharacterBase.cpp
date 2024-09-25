@@ -126,6 +126,7 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 		return GetMesh()->GetSocketLocation(TailSocketName);
 	}
 	
+	
 	return FVector();
 }
 
