@@ -79,6 +79,13 @@ void UMVVM_LoadScreen::DeleteButtonPressed()
 	
 }
 
+void UMVVM_LoadScreen::PlayButtonPressed()
+{
+	AAuraGameModeBase* AuraGameModeBase=Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
+	AuraGameModeBase->TravelToMap(SelectedSlot);
+}
+
+
 void UMVVM_LoadScreen::LoadData()
 {
 	AAuraGameModeBase* AuraGameMode=Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this));
