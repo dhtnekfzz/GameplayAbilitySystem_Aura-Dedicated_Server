@@ -28,7 +28,13 @@ public:
 	void InitializeSlot();
 
 	UPROPERTY()
+	int32 SlotIndex;
+
+	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
+
+	UPROPERTY()
+	FName PlayerStartTag;
 
 	/* Field Notifies */
 
@@ -40,8 +46,7 @@ public:
 	FString GetPlayerName() const { return PlayerName; }
 	FString GetMapName() const { return MapName; }
 	
-	UPROPERTY()
-	int32 SlotIndex;
+
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify,Setter, Getter, meta= (AllowPrivateAccess = "true"))
