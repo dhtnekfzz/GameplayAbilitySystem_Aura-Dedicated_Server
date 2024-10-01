@@ -9,6 +9,7 @@
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class ULoadScreenSaveGame;
 class UAttributeMenuWidgetController;
 class AAuraHUD;
 class USpellMenuWidgetController;
@@ -33,9 +34,16 @@ public:
 	UFUNCTION(BlueprintPure, Category ="AuraAbilitySystemLibrary|WidgetController",meta=(DefaultToSelf="WorldContextObject"))
 	static USpellMenuWidgetController* GetSpellMenuWidgetController(UObject* WorldContextObject);
 
+	/*
+	 *  Ability System Class Defaults
+	 */
+
 	UFUNCTION(Blueprintable, Category ="AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC );
 
+	UFUNCTION(Blueprintable, Category ="AuraAbilitySystemLibrary|CharacterClassDefaults")
+	static void InitializeDefaultAttributesFromSaveData(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ULoadScreenSaveGame* SaveGame);
+	
 	UFUNCTION(BlueprintCallable, Category ="AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass);
 
