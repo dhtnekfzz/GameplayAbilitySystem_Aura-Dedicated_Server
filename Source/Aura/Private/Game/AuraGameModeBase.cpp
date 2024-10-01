@@ -92,10 +92,10 @@ AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 		{
 			if(APlayerStart* PlayerStart=Cast<APlayerStart>(Actor))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("PlayerStart->PlayerStartTag: %s"), *PlayerStart->PlayerStartTag.ToString());
 				if(PlayerStart->PlayerStartTag==AuraGameInstance->PlayerStartTag)
 				{
 					SelectedActor=PlayerStart;
+					break;
 				}
 			}
 		}
