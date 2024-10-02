@@ -17,6 +17,33 @@ enum ESaveSlotStatus
 	Taken
 };
 
+USTRUCT()
+struct FSavedActor
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName ActorName=FName();
+
+	UPROPERTY()
+	FTransform Transform=FTransform();
+
+	UPROPERTY()
+	TArray<uint8> Bytes;
+};
+
+USTRUCT()
+struct FSavedMap
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FString MapAssetName=FString();
+
+	UPROPERTY()
+	TArray<FSavedActor> SavedActors;
+};
+
 USTRUCT(BlueprintType)
 struct FSavedAbility
 {
@@ -104,5 +131,11 @@ public:
 
 	UPROPERTY()
 	TArray<FSavedAbility> SavedAbilities;
+
+	UPROPERTY()
+	TArray<FSavedMap> SavedMaps;
+
+	FSavedMap GetSavedMapWithMapName(const FString& InMapName);
+	bool HasMap(const FString& InMapName);
 	
 };
