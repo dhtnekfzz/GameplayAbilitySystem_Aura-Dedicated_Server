@@ -7,6 +7,7 @@
 #include "GameFramework/SaveGame.h"
 #include "LoadScreenSaveGame.generated.h"
 
+class UGameplayAbility;
 struct FGameplayTag;
 
 UENUM(BlueprintType)
