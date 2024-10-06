@@ -18,6 +18,13 @@ struct FInputActionValue;
 class UInputMappingContext;
 class UAuraInputConfig;
 
+enum class ETargetingStatus : uint8
+{
+	TargetingEnemy,
+	TargetingNotEnemy,
+	NotTargeting
+};
+
 /**
  * 
  */
@@ -54,9 +61,14 @@ private:
 
 	void CursorTrace();
 	
-	IHighlightInterface* ThisActor;
-	IHighlightInterface* LastActor;
+	UPROPERTY()
+	TObjectPtr<AActor> ThisActor;
+	
+	UPROPERTY()
+	TObjectPtr<AActor> LastActor;
 	FHitResult CursorHit;
+	static void HighLightActor(AActor* InActor);
+	static void UnHighLightActor(AActor* InActor);
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -74,7 +86,7 @@ private:
 	float FollowTime=0.f;
 	float ShortPressThreshold=0.5;
 	bool bAutoRunning=false;
-	bool bTargeting=false;
+	ETargetingStatus TargetingStatus=ETargetingStatus::NotTargeting;
 
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius=50.f;
