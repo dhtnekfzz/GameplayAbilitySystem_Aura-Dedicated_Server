@@ -68,7 +68,6 @@ void AAuraCharacter::LoadProgress()
 	{
 		ULoadScreenSaveGame* SaveData=AuraGameMode->RetrieveInGameSaveData();
 		if(SaveData==nullptr) return;
-
 		
 		if(SaveData->bFirstTimeLoadIn)
 		{

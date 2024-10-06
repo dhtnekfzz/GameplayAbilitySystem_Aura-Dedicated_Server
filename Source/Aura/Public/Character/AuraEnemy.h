@@ -8,6 +8,7 @@
 #include "Character/AuraCharacterBase.h"
 #include "Components/WidgetComponent.h"
 #include "Interaction/AuraInterface.h"
+#include "Interaction/HighlightInterface.h"
 #include "AuraEnemy.generated.h"
 
 
@@ -20,7 +21,7 @@ enum class ECharacterClass;
  * 
  */
 UCLASS()
-class AURA_API AAuraEnemy : public AAuraCharacterBase, public IAuraInterface
+class AURA_API AAuraEnemy : public AAuraCharacterBase, public IAuraInterface, public IHighlightInterface
 {
 	GENERATED_BODY()
 
@@ -28,10 +29,10 @@ public:
 	AAuraEnemy();
 	virtual void PossessedBy(AController* NewController) override;
 
-	// Enemy interface
+	// Highlight interface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
-	// end Enemy interface
+	// end Highlight interface
 
 	/* Combat Interface */
 	virtual void Die(const FVector& DeathImpulse ) override;

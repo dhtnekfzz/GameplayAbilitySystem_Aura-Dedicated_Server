@@ -9,6 +9,7 @@
 #include "Components/SplineComponent.h"
 #include "AuraPlayerController.generated.h"
 
+class IHighlightInterface;
 class UNiagaraSystem;
 class UDamageTextComponent;
 class UAuraAbilitySystemComponent;
@@ -53,8 +54,8 @@ private:
 
 	void CursorTrace();
 	
-	IAuraInterface* ThisActor;
-	IAuraInterface* LastActor;
+	IHighlightInterface* ThisActor;
+	IHighlightInterface* LastActor;
 	FHitResult CursorHit;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
