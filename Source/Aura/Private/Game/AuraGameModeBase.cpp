@@ -9,6 +9,7 @@
 #include "Game/LoadScreenSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
+#include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "GameFramework/PlayerStart.h"
 #include "Interaction/SaveInterface.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
@@ -75,7 +76,7 @@ void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
 
-void AAuraGameModeBase::SaveWorldState(UWorld* World) const
+void AAuraGameModeBase::SaveWorldState(UWorld* World,const FString& DestinationMapAssetName) const
 {
 	FString WorldName=World->GetName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
@@ -85,6 +86,12 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World) const
 
 	if(ULoadScreenSaveGame* SaveGame=GetSaveSlotData(AuraGI->LoadSlotName, AuraGI->LoadSlotIndex))
 	{
+		if(DestinationMapAssetName != FString(""))
+		{
+			SaveGame->MapAssetName=DestinationMapAssetName;
+			SaveGame->MapName=GetMapNameFromMapAssetName(DestinationMapAssetName);
+		}
+		
 		if(!SaveGame->HasMap(WorldName))
 		{
 			FSavedMap NewSaveMap;
@@ -176,6 +183,18 @@ void AAuraGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 	const int32 SlotIndex=Slot->SlotIndex;
 
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
+}
+
+FString AAuraGameModeBase::GetMapNameFromMapAssetName(const FString& MapAssetName) const
+{
+	for(auto& Map : Maps)
+	{
+		if(Map.Value.ToSoftObjectPath().GetAssetName()==MapAssetName)
+		{
+			return Map.Key;
+		}
+	}
+	return FString();
 }
 
 AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
