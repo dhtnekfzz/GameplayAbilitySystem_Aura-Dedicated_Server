@@ -9,6 +9,7 @@
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class ULootTiers;
 class ULoadScreenSaveGame;
 class UAttributeMenuWidgetController;
 class AAuraHUD;
@@ -52,6 +53,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category ="AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category ="AuraAbilitySystemLibrary|CharacterClassDefaults",meta=(DefaultToSelf="WorldContextObject"))
+	static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category ="AuraAbilitySystemLibrary|GameplayEffect")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
