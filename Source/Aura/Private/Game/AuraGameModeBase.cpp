@@ -13,6 +13,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "Interaction/SaveInterface.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+#include "GameFramework/Character.h"
 
 void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
@@ -24,8 +25,10 @@ void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	ULoadScreenSaveGame* LoadScreenSaveGame=Cast<ULoadScreenSaveGame>(SaveGameObject);
 	LoadScreenSaveGame->PlayerName=LoadSlot->GetPlayerName();
 	LoadScreenSaveGame->MapName=LoadSlot->GetMapName();
+	LoadScreenSaveGame->MapAssetName=LoadSlot->MapAssetName;
 	LoadScreenSaveGame->SaveSlotStatus=Taken;
 	LoadScreenSaveGame->PlayerStartTag=LoadSlot->PlayerStartTag;
+	
 
 	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 		
@@ -221,6 +224,14 @@ AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 	}
 	return nullptr;
 	
+}
+
+void AAuraGameModeBase::PlayerDied(ACharacter* DeadCharacter)
+{
+	ULoadScreenSaveGame* SaveGame=RetrieveInGameSaveData();
+	if(!IsValid(SaveGame)) return;
+
+	UGameplayStatics::OpenLevel(DeadCharacter, FName(SaveGame->MapAssetName));
 }
 
 void AAuraGameModeBase::BeginPlay()
