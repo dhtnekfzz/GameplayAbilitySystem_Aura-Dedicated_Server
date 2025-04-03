@@ -2,7 +2,6 @@
 
 
 #include "UI/ViewModel/MVVM_LoadScreen.h"
-
 #include "Game/AuraGameInstance.h"
 #include "Game/AuraGameModeBase.h"
 #include "Kismet/GameplayStatics.h"

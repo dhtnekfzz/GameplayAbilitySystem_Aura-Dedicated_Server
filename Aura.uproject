@@ -25,7 +25,9 @@
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
 			"TargetAllowList": [
-				"Editor"
+				"Editor",
+				"Client",
+				"Server"
 			]
 		},
 		{

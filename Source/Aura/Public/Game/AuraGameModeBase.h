@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "AuraGameModeBase.generated.h"
 
 class ULootTiers;
@@ -63,6 +64,24 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	int32 NumberOfPlayers=0;
+
+	void virtual Logout(AController* Exiting) override;
+	void virtual PostLogin(APlayerController* NewPlayerController) override;
+	void StartGame();
+	void DestroySession();
+
+	FTimerHandle GameStartTimer;
+
+private:
+	IOnlineSessionPtr SessionInterface;
+	
+	void CreateSession();
+	void OnDestroySessionComplete(FName SessionName, bool Success);
+	
+	UFUNCTION(BlueprintCallable)
+	void EnterDungeon();
 };
 
 

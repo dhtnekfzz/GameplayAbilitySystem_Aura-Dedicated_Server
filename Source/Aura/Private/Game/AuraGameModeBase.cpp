@@ -9,11 +9,15 @@
 #include "Game/LoadScreenSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
-#include "UI/ViewModel/MVVM_LoadSlot.h"
+#include "OnlineSubSystem.h"
+#include "OnlineSessionSettings.h"
+#include "Game/AuraLobbyGameModeBase.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "GameFramework/PlayerStart.h"
 #include "Interaction/SaveInterface.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "GameFramework/Character.h"
+
 
 void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
@@ -238,4 +242,100 @@ void AAuraGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	Maps.Add(DefaultMapName, DefaultMap);
+
+	GEngine->SetMaxFPS(30);
+	if (IsRunningDedicatedServer())
+	{
+		CreateSession();
+	}
+}
+
+void AAuraGameModeBase::CreateSession()
+{
+	if (IOnlineSubsystem* Subsystem=IOnlineSubsystem::Get())
+	{
+		SessionInterface= Subsystem->GetSessionInterface();
+		SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &AAuraGameModeBase::OnDestroySessionComplete);
+
+		if(SessionInterface->GetNamedSession(FName("DungeonSession"))!=nullptr) return;
+		if (SessionInterface.IsValid())
+		{
+			FOnlineSessionSettings SessionSettings;
+			SessionSettings.bIsLANMatch = true;  
+			SessionSettings.bUsesPresence = false;
+			SessionSettings.NumPublicConnections = 4;  
+			SessionSettings.bAllowJoinInProgress = true;
+			SessionSettings.bShouldAdvertise = true;  
+			SessionSettings.bAllowInvites = true;
+			SessionSettings.bIsDedicated = true; 
+			SessionSettings.bUseLobbiesIfAvailable = true;
+
+			bool bSeesionCreated=SessionInterface->CreateSession(0, FName("DungeonSession"), SessionSettings);
+
+			if (bSeesionCreated)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Create Session."));
+			}
+		}
+	}
+}
+
+void AAuraGameModeBase::DestroySession()
+{
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->DestroySession("DungeonSession");
+	}
+}
+
+void AAuraGameModeBase::OnDestroySessionComplete(FName SessionName,bool Success)
+{
+	if (Success)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Destroy Session."));
+		CreateSession();
+	}
+}
+
+void AAuraGameModeBase::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+
+	if(!HasAuthority()) return;
+	--NumberOfPlayers;
+
+	if (NumberOfPlayers <= 0)
+		DestroySession();
+		
+}
+
+void AAuraGameModeBase::PostLogin(APlayerController* NewPlayerController)
+{
+	Super::PostLogin(NewPlayerController);
+
+	if(!HasAuthority()) return;
+	++NumberOfPlayers;
+
+	if (NumberOfPlayers > 1)
+	{
+		if(SessionInterface.IsValid()&&SessionInterface->GetSessionState("DungeonSession")==EOnlineSessionState::InProgress) return;
+		GetWorldTimerManager().SetTimer(GameStartTimer, this, &AAuraGameModeBase::StartGame, 5);
+	}
+	
+}
+
+void AAuraGameModeBase::StartGame() 
+{
+	auto GameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+	if (GameInstance == nullptr) return;
+	GameInstance->StartSession();
+	
+	UWorld* World = GameInstance->GetWorld();
+	World->ServerTravel("/Game/Maps/Dungeon?listen", ETravelType::TRAVEL_Absolute);
+}
+
+
+void AAuraGameModeBase::EnterDungeon()
+{
+	GetWorld()->ServerTravel("/Script/Engine.World'/Game/Maps/Dungeon.Dungeon");
 }
